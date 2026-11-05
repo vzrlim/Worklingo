@@ -52,16 +52,17 @@ const RESPONSE_JSON_SCHEMA = {
   ],
 } as const;
 
-// The client gives up after 15 s; finish the whole chain before that.
-const TOTAL_BUDGET_MS = LIMITS.CLIENT_TIMEOUT_MS - 2_000; // 13 s
-// When the primary model is overloaded it can hang 30 s+ before a 503,
-// so cap it early and always leave the backup a fair window.
-const BACKUP_RESERVE_MS = 6_000;
-const PRIMARY_TIMEOUT_MS = Math.min(
-  LIMITS.AI_TIMEOUT_MS,
-  TOTAL_BUDGET_MS - BACKUP_RESERVE_MS
-); // 7 s
+// The client gives up after 15 s. Leave 3 s for cold start + phone network.
+const TOTAL_BUDGET_MS = LIMITS.CLIENT_TIMEOUT_MS - 3_000; // 12 s
+// An overloaded model can hang 30 s+ before a 503, so the first model is
+// capped early and the second always gets a fair window.
+const SECOND_MODEL_RESERVE_MS = 6_000;
 const MIN_USEFUL_CALL_MS = 3_000;
+
+// After the primary fails, skip it for a while (per warm server instance)
+// so users don't wait for an overloaded model on every request.
+const PRIMARY_COOLDOWN_MS = 5 * 60_000;
+let primaryCooldownUntil = 0;
 
 /**
  * Lowest thinking setting each model family accepts.
@@ -181,33 +182,36 @@ export async function generateInterviewFeedback(
   }
 
   const startedAt = Date.now();
+  const primary = { model: primaryModel, source: "ai" as const };
+  const backup = { model: fallbackModel, source: "ai-backup" as const };
+  // Normal order: primary → backup. While the primary is cooling down: backup → primary.
+  const chain =
+    Date.now() < primaryCooldownUntil ? [backup, primary] : [primary, backup];
 
-  // 1. Primary model
-  try {
-    return await callModel(
-      aiClient,
-      primaryModel,
-      userContent,
-      "ai",
-      PRIMARY_TIMEOUT_MS
+  for (let i = 0; i < chain.length; i++) {
+    const step = chain[i];
+    const remaining = TOTAL_BUDGET_MS - (Date.now() - startedAt);
+    const isLast = i === chain.length - 1;
+    const timeoutMs = Math.min(
+      LIMITS.AI_TIMEOUT_MS,
+      isLast ? remaining : remaining - SECOND_MODEL_RESERVE_MS
     );
-  } catch {
-    // Never log the error object: it can echo request content.
-  }
-
-  // 2. Backup model, with whatever time is left in the budget
-  const remaining = TOTAL_BUDGET_MS - (Date.now() - startedAt);
-  if (remaining >= MIN_USEFUL_CALL_MS) {
+    if (timeoutMs < MIN_USEFUL_CALL_MS) continue;
     try {
-      return await callModel(
+      const result = await callModel(
         aiClient,
-        fallbackModel,
+        step.model,
         userContent,
-        "ai-backup",
-        Math.min(LIMITS.AI_TIMEOUT_MS, remaining)
+        step.source,
+        timeoutMs
       );
+      if (step === primary) primaryCooldownUntil = 0; // primary is healthy again
+      return result;
     } catch {
-      // fall through
+      // Never log the error object: it can echo request content.
+      if (step === primary) {
+        primaryCooldownUntil = Date.now() + PRIMARY_COOLDOWN_MS;
+      }
     }
   }
 

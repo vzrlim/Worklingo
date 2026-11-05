@@ -61,8 +61,9 @@ Items marked **(YOU)** are manual steps for the human — agents should remind, 
 - [x] SDG badge + IG link + privacy note
 
 ## Phase 8 — Deploy & protect
-- [ ] **(YOU)** Import repo in Vercel → add env vars (`GEMINI_API_KEY`, models, `AI_ENABLED=true`, `ALLOWED_ORIGIN=https://<your-app>.vercel.app`)
-- [ ] **(YOU)** Vercel → Project → Firewall → New Rule → path starts with `/api/feedback` → Rate Limit, Fixed window, **10 requests / 10 min per IP** → action 429 (if Hobby shows an upgrade prompt, use **Deny**) → Publish
+- [x] **(YOU)** Import repo in Vercel → add env vars (`GEMINI_API_KEY`, models, `AI_ENABLED=true`) *(live: https://worklingo-pmg3.vercel.app — AI verified `ai-backup` 2026-11-06)*
+- [ ] **(YOU)** Add `ALLOWED_ORIGIN=https://worklingo-pmg3.vercel.app` (Production only) → Redeploy
+- [ ] **(YOU)** Vercel → Project → Firewall → New Rule → path starts with `/api/feedback` → Rate Limit, Fixed window, **10 requests / 10 min per IP** → action 429 → Publish. If Hobby can't do Rate Limit, **skip this rule** — never use Deny on this path (it blocks every AI request).
 - [ ] Test checklist:
   - [x] Quiz works with `AI_ENABLED=false` *(quiz makes no API calls; verified locally with no key)*
   - [ ] Simulator: normal AI response (`source: ai`) — key works; `gemini-3.8-flash` was 503 "high demand" on 2026-11-06, retry later
@@ -76,7 +77,6 @@ Items marked **(YOU)** are manual steps for the human — agents should remind, 
 ## Phase 9 — Evidence for report (YOU)
 - [ ] Screenshots of each page + feedback modes; short screen recording
 - [ ] Live URL + QR code → Instagram link in bio / Story / post
-- [ ] Save AI tool chat links (Antigravity / Claude) for the APU AI Declaration & Usage Log
 - [ ] Note which features came from which expert insight (PRD §2 table) for Design Rationale
 
 ## Stretch (only with user approval) — see PRD §11
