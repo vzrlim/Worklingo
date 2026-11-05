@@ -65,7 +65,7 @@ export function XpChip() {
     return (
       <Badge
         variant="outline"
-        className="font-sans font-medium text-xs px-2.5 py-1 text-muted-foreground border-border"
+        className="font-sans font-medium text-xs px-2.5 py-1 text-primary-foreground/85 border-primary-foreground/40"
       >
         Guest
       </Badge>
@@ -78,7 +78,7 @@ export function XpChip() {
     <span ref={chipRef} className="inline-flex rounded-full">
       <Badge
         variant="secondary"
-        className="font-sans font-medium text-xs px-2.5 py-1 border border-border"
+        className="font-sans font-semibold text-xs px-2.5 py-1 border border-gilt/70"
       >
         ⚡ {progress.xp} XP · {level}
       </Badge>

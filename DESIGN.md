@@ -13,7 +13,7 @@
 ## 2. Layout
 - App screens (`/interview`, `/quiz`): content column `max-w-md` (448 px), centred, `px-4` side padding.
 - Landing (`/`): sections up to `max-w-5xl`, single column on mobile, 2–3 columns from `md:`.
-- Sticky top bar (h-14): app name (left) · XP chip with level (right).
+- Sticky top bar (h-14): app name (left) · XP chip with level (right). **Navy bar** (`bg-primary`, white Cinzel name) with a 2 px **gilt** bottom edge (`border-gilt`, token `--gilt: #C9A24E` — lighter bronze that reads on navy); inner width `max-w-5xl`. *(user-approved 2026-11-06)*
 - Footer: SDG badge, Instagram link, privacy note (small text).
 - No horizontal scroll at any width. Vertical spacing: `space-y-6` (app), `py-16` (landing sections).
 

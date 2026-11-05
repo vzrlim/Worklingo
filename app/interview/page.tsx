@@ -25,6 +25,7 @@ import { buildOfflineFeedback } from "@/lib/fallback";
 import {
   FeedbackResponse,
   feedbackResponseSchema,
+  cleanTargetRole,
 } from "@/lib/feedback-schema";
 import { LIMITS } from "@/lib/config";
 import {
@@ -81,7 +82,7 @@ export default function InterviewPage() {
           body: JSON.stringify({
             questionId: selectedQuestion.id,
             answer: answer.trim(),
-            targetRole: targetRole.trim() || undefined,
+            targetRole: cleanTargetRole(targetRole) || undefined,
           }),
           signal: controller.signal,
         });

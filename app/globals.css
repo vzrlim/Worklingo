@@ -43,6 +43,7 @@
   --color-warn: var(--warn);
   --color-warn-soft: var(--warn-soft);
   --color-bronze: var(--ring); /* alias: Corinthian bronze for Greek motifs */
+  --color-gilt: var(--gilt);   /* lighter gold that reads on navy (header edge) */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -80,6 +81,7 @@
   --danger-soft: #FEE2E2;
   --warn: #926018;
   --warn-soft: #FEF3C7;           /* offline coach mode */
+  --gilt: #C9A24E;                /* gilded bronze: gold accents on navy */
 
   --sidebar: #FBFBF9;
   --sidebar-foreground: #0F172A;

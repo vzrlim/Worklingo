@@ -28,11 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cinzel.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <header className="sticky top-0 z-50 h-14 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-          <div className="max-w-md mx-auto px-4 h-full flex items-center justify-between">
+        <header className="sticky top-0 z-50 h-14 bg-primary text-primary-foreground border-b-2 border-gilt shadow-md shadow-primary/25">
+          <div className="max-w-5xl mx-auto px-4 h-full flex items-center justify-between">
             <Link
               href="/"
-              className="font-serif text-xl font-bold tracking-wider text-primary hover:opacity-90 transition-opacity"
+              className="font-serif text-xl font-bold tracking-[0.12em] text-primary-foreground hover:text-gilt transition-colors"
             >
               {APP_NAME}
             </Link>

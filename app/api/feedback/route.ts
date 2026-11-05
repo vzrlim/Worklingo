@@ -20,8 +20,11 @@ function isAllowedOrigin(request: NextRequest): boolean {
     .filter(Boolean);
   if (allowed.length === 0) return true; // check disabled
   const origin = request.headers.get("origin");
-  // Browsers always send Origin on POST, so a missing header is not a real visitor.
-  return origin !== null && allowed.includes(origin.replace(/\/$/, ""));
+  if (origin === null) {
+    // Some browsers omit Origin on same-origin requests; trust their fetch-metadata header.
+    return request.headers.get("sec-fetch-site") === "same-origin";
+  }
+  return allowed.includes(origin.replace(/\/$/, ""));
 }
 
 export async function POST(request: NextRequest) {
