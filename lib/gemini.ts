@@ -53,7 +53,14 @@ const RESPONSE_JSON_SCHEMA = {
 } as const;
 
 // The client gives up after 15 s; finish the whole chain before that.
-const TOTAL_BUDGET_MS = LIMITS.CLIENT_TIMEOUT_MS - 2_000;
+const TOTAL_BUDGET_MS = LIMITS.CLIENT_TIMEOUT_MS - 2_000; // 13 s
+// When the primary model is overloaded it can hang 30 s+ before a 503,
+// so cap it early and always leave the backup a fair window.
+const BACKUP_RESERVE_MS = 6_000;
+const PRIMARY_TIMEOUT_MS = Math.min(
+  LIMITS.AI_TIMEOUT_MS,
+  TOTAL_BUDGET_MS - BACKUP_RESERVE_MS
+); // 7 s
 const MIN_USEFUL_CALL_MS = 3_000;
 
 /**
@@ -156,7 +163,7 @@ export async function generateInterviewFeedback(
 
   const primaryModel = process.env.GEMINI_MODEL_PRIMARY || "gemini-3.8-flash";
   const fallbackModel =
-    process.env.GEMINI_MODEL_FALLBACK || "gemini-3.5-flash-lite";
+    process.env.GEMINI_MODEL_FALLBACK || "gemini-3.1-flash-lite";
 
   const userContent = buildUserPrompt(
     question.prompt,
@@ -182,7 +189,7 @@ export async function generateInterviewFeedback(
       primaryModel,
       userContent,
       "ai",
-      LIMITS.AI_TIMEOUT_MS
+      PRIMARY_TIMEOUT_MS
     );
   } catch {
     // Never log the error object: it can echo request content.
