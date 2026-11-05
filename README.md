@@ -125,7 +125,7 @@ data/             interview question bank and quiz scenarios
 lib/              Gemini call + fallback chain, offline feedback, XP/badges, speech, config
 ```
 
-The project docs define the rules for anyone, human or AI, working on the code:
+Project docs:
 - [`PRD.md`](PRD.md): scope
 - [`DESIGN.md`](DESIGN.md): UI rules
 - [`AGENTS.md`](AGENTS.md): coding and security rules
