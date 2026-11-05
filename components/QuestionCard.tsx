@@ -29,10 +29,8 @@ export function QuestionCard({
     >
       <Card
         className={cn(
-          "transition-colors border border-border shadow-xs group-hover:border-primary/50",
-          isSelected
-            ? "ring-2 ring-primary bg-secondary border-primary shadow-sm"
-            : "bg-card"
+          "transition-colors group-hover:border-primary/45",
+          isSelected && "ring-2 ring-primary bg-secondary! border-primary"
         )}
       >
         <CardHeader className="p-4 space-y-2">

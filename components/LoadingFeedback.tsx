@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react";
 
 export function LoadingFeedback() {
   return (
-    <Card className="border-border shadow-sm animate-in fade-in duration-300">
+    <Card className="animate-in fade-in duration-300">
       <CardHeader className="space-y-3 pb-3">
         <div className="flex items-center gap-2 text-primary">
           <Sparkles className="size-5 animate-spin" />

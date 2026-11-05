@@ -77,7 +77,7 @@
 
 ## 5. Shape & depth
 - Radius comes from `--radius` (0.75rem). Use shadcn defaults; don't hard-code other radii except `rounded-full` for chips and the mic button.
-- Cards: shadcn `Card` with `shadow-sm`. No heavy shadows, no gradients on cards.
+- Cards: shadcn `Card`, whose base uses the **`slab`** utility (globals.css): `bg-card/90` + light `backdrop-blur-sm` + `border-primary/15` + `shadow-lg shadow-primary/10`, so cards lift off the veined marble. Boxes that sit directly on the page background use `slab` too. Don't override it with faint `bg-card/60`, `border-border` or `shadow-xs` (they blend into the marble). No gradients on cards. *(user-approved 2026-11-06)*
 
 ## 6. Components
 ### 6.1 shadcn primitives (`components/ui/` — add with `npx shadcn@latest add <name>`)
@@ -128,7 +128,8 @@ Icons: `lucide-react` only (shadcn's default), 20–24 px, always paired with te
 - **Greek key (`MeanderBand`)** = structure only: footer top border, short ornament under page/section titles. Colour `text-bronze/60–80`.
 - **Laurel** only around scores ≥ 8 (quiz result, feedback score) — it means "excellent", don't use it as decoration.
 - **Roman numerals** only for real sequences (quiz scenarios I–X).
-- **Marble** = faint SVG-turbulence veins on `body` (globals.css). Keep it faint; cards stay plain white.
+- **Marble** = visible grey + bronze SVG-turbulence veins and a warm light from above on `body` (globals.css), "ethereal and grandiose" per the user. Cards sit on it as `slab`s (§5).
+- **Landing sky (hero only):** slowly turning sun rays, drifting gold dust, mist at the temple base, and a CSS-3D temple (swings up on load; tilts toward the mouse with depth layers). No WebGL/3D library.
 - All motifs are inline SVG / CSS masks using tokens (`text-primary`, `text-bronze`) — no image files. Every sub-page starts with a `BackButton` (44 px).
 
 ## 10. Don't

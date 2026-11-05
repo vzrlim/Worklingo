@@ -167,7 +167,7 @@ export default function InterviewPage() {
             </p>
           </section>
 
-          <div className="rounded-lg border border-border bg-secondary/50 p-3 text-xs font-sans text-muted-foreground leading-relaxed space-y-1">
+          <div className="slab rounded-lg p-3 text-xs font-sans text-muted-foreground leading-relaxed space-y-1">
             <p>
               <strong className="text-foreground">STAR</strong> = Situation,
               Task, Action, Result — for &ldquo;tell me about a time&rdquo;
@@ -205,7 +205,7 @@ export default function InterviewPage() {
             All questions
           </BackButton>
 
-          <Card className="border-border shadow-xs bg-secondary/30">
+          <Card className="border-l-4 border-l-bronze/70">
             <CardHeader className="p-4 space-y-1">
               <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-primary">
                 Question ({selectedQuestion.framework})
@@ -234,13 +234,13 @@ export default function InterviewPage() {
               maxLength={LIMITS.MAX_TARGET_ROLE_LENGTH}
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
-              className="bg-card border-border font-sans text-sm"
+              className="bg-card border-primary/25 shadow-sm font-sans text-sm"
               disabled={isLoading}
             />
           </div>
 
           {/* Voice Input Section */}
-          <Card className="border-border p-4 shadow-2xs">
+          <Card className="p-4">
             <CardContent className="p-0 flex flex-col items-center justify-center">
               <MicButton
                 currentAnswer={answer}

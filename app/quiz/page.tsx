@@ -54,7 +54,7 @@ function QuizSkeleton() {
   return (
     <div className="max-w-md mx-auto space-y-6" aria-hidden="true">
       <Skeleton className="h-6 w-full" />
-      <Card className="border-border">
+      <Card>
         <CardHeader className="space-y-3">
           <Skeleton className="h-5 w-24" />
           <Skeleton className="h-16 w-full" />
@@ -138,7 +138,7 @@ function QuizContent() {
       <BackButton href="/">Home</BackButton>
       <QuizProgress current={currentIndex + 1} total={questions.length} />
 
-      <Card className="border-border shadow-sm">
+      <Card>
         <CardHeader className="space-y-3 pb-4">
           <div className="flex items-center justify-between gap-3">
             <Badge

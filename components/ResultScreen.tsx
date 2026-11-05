@@ -41,7 +41,7 @@ export function ResultScreen({ score, total, onPlayAgain }: ResultScreenProps) {
   }
 
   return (
-    <Card className="border-border shadow-sm text-center">
+    <Card className="text-center">
       <CardHeader className="space-y-3 pb-4">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-secondary text-primary">
           <Award className="size-8" />

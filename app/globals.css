@@ -122,6 +122,12 @@
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14' width='10' height='14'%3E%3Cpath d='M0 1H10M0 13H10M8 13V4H2V10H5V7' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
 }
 
+/* Marble slab: the surface for every card/box — near-solid white face, navy hairline,
+   soft navy shadow so it lifts off the veined background, light frosted blur. */
+@utility slab {
+  @apply border border-primary/15 bg-card/90 shadow-lg shadow-primary/10 backdrop-blur-sm;
+}
+
 /* Column fluting: thin vertical grooves on the shaft */
 @utility fluting {
   background-image: repeating-linear-gradient(

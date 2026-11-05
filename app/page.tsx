@@ -101,7 +101,7 @@ export default function Home() {
 
       {/* 2. Core Modules */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-        <Card className="border-border shadow-xs hover:border-primary/50 transition-colors flex flex-col justify-between">
+        <Card className="hover:border-primary/45 transition-colors flex flex-col justify-between">
           <CardHeader className="space-y-2 pb-3">
             <div className="flex items-center gap-2 text-primary">
               <div className="flex size-9 items-center justify-center rounded-lg bg-secondary text-primary">
@@ -131,7 +131,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="border-border shadow-xs hover:border-primary/50 transition-colors flex flex-col justify-between">
+        <Card className="hover:border-primary/45 transition-colors flex flex-col justify-between">
           <CardHeader className="space-y-2 pb-3">
             <div className="flex items-center gap-2 text-primary">
               <div className="flex size-9 items-center justify-center rounded-lg bg-secondary text-primary">
@@ -176,7 +176,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Insight E1 */}
-          <Card className="border-border shadow-xs bg-card/60 flex flex-col justify-between">
+          <Card className="flex flex-col justify-between">
             <CardHeader className="p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <MessageSquare className="size-4 text-primary" />
@@ -200,7 +200,7 @@ export default function Home() {
           </Card>
 
           {/* Insight E2 */}
-          <Card className="border-border shadow-xs bg-card/60 flex flex-col justify-between">
+          <Card className="flex flex-col justify-between">
             <CardHeader className="p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <Award className="size-4 text-primary" />
@@ -223,7 +223,7 @@ export default function Home() {
           </Card>
 
           {/* Insight E3 */}
-          <Card className="border-border shadow-xs bg-card/60 flex flex-col justify-between">
+          <Card className="flex flex-col justify-between">
             <CardHeader className="p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <Users className="size-4 text-primary" />
@@ -249,7 +249,7 @@ export default function Home() {
       </section>
 
       {/* 4. Trust, Privacy & Campaign Footer Banner */}
-      <section className="rounded-xl border border-border bg-secondary/40 p-6 text-center space-y-3 max-w-2xl mx-auto">
+      <section className="slab rounded-xl p-6 text-center space-y-3 max-w-2xl mx-auto">
         <div className="flex items-center justify-center gap-1.5 text-primary text-xs font-semibold font-sans">
           <ShieldCheck className="size-4" />
           <span>Student Privacy & Integrity</span>

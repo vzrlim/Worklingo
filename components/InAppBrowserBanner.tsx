@@ -29,7 +29,7 @@ export function InAppBrowserBanner() {
   }
 
   return (
-    <Alert className="relative border-border bg-secondary/80 pr-10 text-xs">
+    <Alert className="slab relative pr-10 text-xs">
       <Info className="size-4 text-primary shrink-0" />
       <AlertDescription className="font-sans text-xs text-foreground leading-normal">
         <strong>Tip for voice input:</strong> Tap <strong>⋯</strong> in the top

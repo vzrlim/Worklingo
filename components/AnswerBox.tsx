@@ -44,7 +44,7 @@ export function AnswerBox({ value, onChange, disabled }: AnswerBoxProps) {
         onChange={(e) => onChange(e.target.value)}
         placeholder="Type your answer here, or tap the microphone above to speak out loud..."
         className={cn(
-          "w-full resize-y font-sans text-base leading-relaxed bg-card border-border",
+          "w-full resize-y font-sans text-base leading-relaxed bg-card border-primary/25 shadow-sm",
           isTooLong && "border-destructive focus-visible:ring-destructive",
           isTooShort && "border-warn/60"
         )}

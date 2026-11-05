@@ -84,7 +84,7 @@ export function FeedbackPanel({
     <div aria-live="polite" className="space-y-6 animate-in fade-in duration-300">
       {feedback.source === "offline" && <OfflineNotice />}
 
-      <Card className="border-border shadow-sm">
+      <Card>
         <CardHeader className="space-y-3 pb-4">
           <div className="flex items-center justify-between">
             <div>
@@ -116,7 +116,11 @@ export function FeedbackPanel({
               {feedback.elements.map((el, idx) => (
                 <div
                   key={`el-${idx}`}
-                  className="p-3 rounded-lg border border-border bg-card/60 flex items-start gap-2.5 text-xs font-sans"
+                  className={`p-3 rounded-lg border flex items-start gap-2.5 text-xs font-sans ${
+                    el.present
+                      ? "border-success/30 bg-success-soft/60"
+                      : "border-destructive/25 bg-danger-soft/50"
+                  }`}
                 >
                   {el.present ? (
                     <CheckCircle2 className="size-4 text-success shrink-0 mt-0.5" />
