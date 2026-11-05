@@ -64,7 +64,7 @@ Items marked **(YOU)** are manual steps for the human — agents should remind, 
 - [x] **(YOU)** *(published 2026-11-06, verified: requests 1–10 pass, 11+ → 429)* Vercel → Project → Firewall → New Rule → path starts with `/api/feedback` → Rate Limit, Fixed window, **10 requests / 10 min per IP** → action 429 → Publish. "Deny" is OK as the over-limit action; never add a plain Deny rule on this path (it blocks every AI request). If Hobby can't do Rate Limit, skip this rule.
 - [ ] Test checklist:
   - [x] Quiz works with `AI_ENABLED=false` *(quiz makes no API calls; verified locally with no key)*
-  - [ ] Simulator: normal AI response (`source: ai`) — key works; `gemini-3.8-flash` was 503 "high demand" on 2026-11-06, retry later
+  - [x] Simulator: normal AI response (`source: ai`) *(live 2026-11-06: AI Coach in 2.2–3.7 s with gemini-3.1-flash-lite)*
   - [x] Wrong primary model name → `source: ai-backup` *(same code path verified 2026-11-06: primary 503 overloaded → backup answered in 8–9 s)*
   - [x] Invalid key → `source: offline` *(verified locally: fake key → offline in ~0.5 s)*
   - [x] Hit the rate limit → client shows offline mode, no raw error *(live 429 after 10 requests; client maps any non-200 to offline)*
