@@ -217,6 +217,10 @@
 
 /* Divine light behind the temple, with slowly turning sun rays */
 .aegean-sky {
+  /* Sun centre = the shield disc in the pediment. The pediment spans the hero width
+     (100vw − 2rem, max 672 px) and the disc sits at 47/400 of that width from its top;
+     the sky box starts 4rem above the hero. */
+  --sun-y: calc(4rem + min(calc((100vw - 2rem) * 0.1175), 79px));
   position: absolute;
   z-index: -1;
   pointer-events: none;
@@ -225,16 +229,19 @@
   width: 170%;
   height: 115%;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse 45% 40% at 50% 28%, rgb(255 251 238 / 0.95), rgb(255 244 214 / 0.5) 45%, transparent 72%);
+  background: radial-gradient(ellipse 45% 40% at 50% var(--sun-y), rgb(255 251 238 / 0.95), rgb(255 244 214 / 0.5) 45%, transparent 72%);
+  /* Rays dissolve upward toward the header instead of stopping at the box edge. */
+  -webkit-mask: linear-gradient(to bottom, transparent 0, black 5.5rem);
+  mask: linear-gradient(to bottom, transparent 0, black 5.5rem);
 }
 .aegean-sky::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-conic-gradient(from 0deg at 50% 28%, rgb(201 162 78 / 0.16) 0deg, transparent 4deg 11deg);
-  -webkit-mask: radial-gradient(circle 420px at 50% 28%, black 10%, transparent 100%);
-  mask: radial-gradient(circle 420px at 50% 28%, black 10%, transparent 100%);
-  transform-origin: 50% 28%;
+  background: repeating-conic-gradient(from 0deg at 50% var(--sun-y), rgb(201 162 78 / 0.16) 0deg, transparent 4deg 11deg);
+  -webkit-mask: radial-gradient(circle 420px at 50% var(--sun-y), black 10%, transparent 100%);
+  mask: radial-gradient(circle 420px at 50% var(--sun-y), black 10%, transparent 100%);
+  transform-origin: 50% var(--sun-y);
   animation: sun-rays 120s linear infinite;
 }
 @keyframes sun-rays { to { transform: rotate(360deg); } }
