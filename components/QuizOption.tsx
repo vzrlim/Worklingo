@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 
 interface QuizOptionProps {
   text: string;
@@ -23,16 +23,20 @@ export function QuizOption({
   let statusBadge = null;
 
   if (isAnswered) {
+    // disabled:opacity-100 — the locked button must not dim the correct / chosen answer
     if (isCorrect) {
-      styleClasses =
-        "bg-success-soft border-success text-foreground font-medium";
+      styleClasses = cn(
+        "bg-success-soft border-success text-foreground font-medium disabled:opacity-100",
+        isSelected && "glint"
+      );
       statusBadge = (
-        <span className="flex items-center gap-1 text-xs text-success font-semibold shrink-0">
+        <span className="pop flex items-center gap-1 text-xs text-success font-semibold shrink-0">
           <CheckCircle2 className="size-4" /> Correct
         </span>
       );
     } else if (isSelected) {
-      styleClasses = "bg-danger-soft border-destructive text-foreground";
+      styleClasses =
+        "bg-danger-soft border-destructive text-foreground disabled:opacity-100";
       statusBadge = (
         <span className="flex items-center gap-1 text-xs text-destructive font-semibold shrink-0">
           <XCircle className="size-4" /> Incorrect

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { Badge } from "@/components/ui/badge";
 import { getProgress, getLevel, UserProgress } from "@/lib/progress";
 
@@ -47,6 +47,20 @@ export function XpChip() {
     getServerSnapshot
   );
 
+  // Bump the chip only when progress actually changes (not on page load).
+  const chipRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const bump = () => {
+      const el = chipRef.current;
+      if (!el) return;
+      el.classList.remove("xp-bump");
+      void el.offsetWidth; // restart the CSS animation
+      el.classList.add("xp-bump");
+    };
+    window.addEventListener("worklingo_progress_updated", bump);
+    return () => window.removeEventListener("worklingo_progress_updated", bump);
+  }, []);
+
   if (!progress.isStorageAvailable) {
     return (
       <Badge
@@ -61,11 +75,13 @@ export function XpChip() {
   const level = getLevel(progress.xp);
 
   return (
-    <Badge
-      variant="secondary"
-      className="font-sans font-medium text-xs px-2.5 py-1 border border-border transition-all duration-200"
-    >
-      ⚡ {progress.xp} XP · {level}
-    </Badge>
+    <span ref={chipRef} className="inline-flex rounded-full">
+      <Badge
+        variant="secondary"
+        className="font-sans font-medium text-xs px-2.5 py-1 border border-border"
+      >
+        ⚡ {progress.xp} XP · {level}
+      </Badge>
+    </span>
   );
 }

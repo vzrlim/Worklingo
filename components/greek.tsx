@@ -1,3 +1,4 @@
+import type React from "react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -11,18 +12,20 @@ export function MeanderBand({ className }: { className?: string }) {
 /** Temple pediment: outer gable, inner tympanum and a central shield. Draws in once on load. */
 export function Pediment({ className }: { className?: string }) {
   return (
+    // Uniform scaling (no preserveAspectRatio="none" / non-scaling-stroke):
+    // otherwise the dash length is measured before the stretch and lines stop short.
     <svg
       aria-hidden="true"
-      viewBox="0 0 400 92"
-      preserveAspectRatio="none"
-      className={cn("draw-in block w-full overflow-visible", className)}
+      viewBox="0 0 400 72"
+      className={cn("draw-in block h-auto w-full overflow-visible", className)}
       fill="none"
       stroke="currentColor"
+      strokeLinejoin="round"
     >
-      <path pathLength={1} vectorEffect="non-scaling-stroke" strokeWidth={2.5} d="M2 90 L200 4 L398 90 Z" />
-      <path pathLength={1} vectorEffect="non-scaling-stroke" strokeWidth={1.25} d="M46 82 L200 17 L354 82 Z" />
-      <path pathLength={1} vectorEffect="non-scaling-stroke" strokeWidth={1.25} d="M188 66 a12 12 0 1 0 24 0 a12 12 0 1 0 -24 0" />
-      <path pathLength={1} vectorEffect="non-scaling-stroke" strokeWidth={1.25} d="M194 66 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0" />
+      <path pathLength={1} strokeWidth={1.8} d="M2 70 L200 3 L398 70 Z" />
+      <path pathLength={1} strokeWidth={1} d="M46 63 L200 13 L354 63 Z" />
+      <path pathLength={1} strokeWidth={1} d="M191 47 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0" />
+      <path pathLength={1} strokeWidth={1} d="M195.5 47 a4.5 4.5 0 1 0 9 0 a4.5 4.5 0 1 0 -9 0" />
     </svg>
   );
 }
@@ -84,21 +87,25 @@ function LaurelBranch() {
   return (
     <g>
       <path
+        pathLength={1}
         d={`M${STEM_FROM.x} ${STEM_FROM.y} A${R} ${R} 0 0 1 ${STEM_TO.x} ${STEM_TO.y}`}
         fill="none"
         stroke="currentColor"
         strokeWidth={1.2}
       />
       {LEAVES.map((l, i) => (
-        <ellipse
-          key={i}
-          cx={l.x}
-          cy={l.y}
-          rx={7.5}
-          ry={2.9}
-          transform={`rotate(${l.rot} ${l.x} ${l.y})`}
-          fill="currentColor"
-        />
+        // rotation on the <g>, so the CSS pop-in scale on the leaf doesn't replace it
+        <g key={i} transform={`rotate(${l.rot} ${l.x} ${l.y})`}>
+          <ellipse
+            className="leaf"
+            style={{ "--i": i } as React.CSSProperties}
+            cx={l.x}
+            cy={l.y}
+            rx={7.5}
+            ry={2.9}
+            fill="currentColor"
+          />
+        </g>
       ))}
     </g>
   );
@@ -111,7 +118,7 @@ export function Laurel({ children, className }: { children: ReactNode; className
       <svg
         aria-hidden="true"
         viewBox="0 0 120 104"
-        className="absolute inset-0 h-full w-full text-bronze/85"
+        className="laurel-grow absolute inset-0 h-full w-full text-bronze/85"
       >
         <LaurelBranch />
         <g transform="translate(120 0) scale(-1 1)">
