@@ -33,9 +33,9 @@ import { TempleStage } from "@/components/TempleStage";
 
 export default function Home() {
   return (
-    <div className="space-y-16 py-2 md:py-8">
+    <div className="space-y-16 pb-2 md:pb-8">
       {/* 1. Hero: a temple front — pediment, inscribed entablature, Greek-key frieze, columns, steps */}
-      <section className="relative isolate max-w-2xl mx-auto">
+      <section className="hero-temple relative isolate max-w-2xl mx-auto">
         <div aria-hidden="true" className="aegean-sky" />
         <div aria-hidden="true" className="gold-motes" />
         <TempleStage>
