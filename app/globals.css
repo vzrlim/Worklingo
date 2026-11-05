@@ -124,6 +124,14 @@
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14' width='10' height='14'%3E%3Cpath d='M0 1H10M0 13H10M8 13V4H2V10H5V7' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
 }
 
+/* Clip decoration that is wider than the screen (hero sky/mist/dust) on a real element.
+   iOS Safari ignores overflow on <body>, so the page silently became wider than the
+   phone and could be pinch-zoomed out. `hidden` is the fallback for Safari < 16. */
+.page-clip {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 /* Marble slab: the surface for every card/box — near-solid white face, navy hairline,
    soft navy shadow so it lifts off the veined background, light frosted blur. */
 @utility slab {

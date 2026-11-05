@@ -78,11 +78,14 @@ function buildUserPrompt(
   targetRole: string | undefined,
   answer: string
 ): string {
+  // The answer is fenced in <answer> tags. Remove any answer tags the student typed,
+  // so they can't close the fence early and smuggle in instructions.
+  const fenced = answer.replace(/<\s*\/?\s*answer\b[^>]*>/gi, "");
   return `Question: ${prompt}
 Framework: ${framework}
 Elements: ${elementNames.join(", ")}
 Target role: ${targetRole || "not specified"}
-<answer>${answer}</answer>`;
+<answer>${fenced}</answer>`;
 }
 
 /** Make small model slips (4 strengths, score 7.5) non-fatal before zod validation. */

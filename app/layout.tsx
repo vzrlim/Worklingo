@@ -40,7 +40,7 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-6">
+        <main className="page-clip flex-1 w-full max-w-4xl mx-auto px-4 py-6">
           {children}
         </main>
 
