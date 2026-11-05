@@ -162,9 +162,11 @@ export async function generateInterviewFeedback(
     return buildOfflineFeedback(questionId, answer);
   }
 
-  const primaryModel = process.env.GEMINI_MODEL_PRIMARY || "gemini-3.8-flash";
-  const fallbackModel =
-    process.env.GEMINI_MODEL_FALLBACK || "gemini-3.1-flash-lite";
+  // Fast + reliable first; the larger model is the backup (measured 2026-11-06:
+  // 3.1-flash-lite 1.8–2.6 s every time; 3.8-flash 503s or 6.4 s).
+  const primaryModel =
+    process.env.GEMINI_MODEL_PRIMARY || "gemini-3.1-flash-lite";
+  const fallbackModel = process.env.GEMINI_MODEL_FALLBACK || "gemini-3.8-flash";
 
   const userContent = buildUserPrompt(
     question.prompt,

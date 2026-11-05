@@ -61,13 +61,13 @@ Items marked **(YOU)** are manual steps for the human — agents should remind, 
 - [x] SDG badge + IG link + privacy note
 
 ## Phase 8 — Deploy & protect
-- [ ] **(YOU)** Vercel → Project → Firewall → New Rule → path starts with `/api/feedback` → Rate Limit, Fixed window, **10 requests / 10 min per IP** → action 429 → Publish. If Hobby can't do Rate Limit, **skip this rule** — never use Deny on this path (it blocks every AI request).
+- [x] **(YOU)** *(published 2026-11-06, verified: requests 1–10 pass, 11+ → 429)* Vercel → Project → Firewall → New Rule → path starts with `/api/feedback` → Rate Limit, Fixed window, **10 requests / 10 min per IP** → action 429 → Publish. "Deny" is OK as the over-limit action; never add a plain Deny rule on this path (it blocks every AI request). If Hobby can't do Rate Limit, skip this rule.
 - [ ] Test checklist:
   - [x] Quiz works with `AI_ENABLED=false` *(quiz makes no API calls; verified locally with no key)*
   - [ ] Simulator: normal AI response (`source: ai`) — key works; `gemini-3.8-flash` was 503 "high demand" on 2026-11-06, retry later
   - [x] Wrong primary model name → `source: ai-backup` *(same code path verified 2026-11-06: primary 503 overloaded → backup answered in 8–9 s)*
   - [x] Invalid key → `source: offline` *(verified locally: fake key → offline in ~0.5 s)*
-  - [ ] Hit the rate limit → client shows offline mode, no raw error — needs Vercel Firewall rule
+  - [x] Hit the rate limit → client shows offline mode, no raw error *(live 429 after 10 requests; client maps any non-200 to offline)*
   - [x] API key not visible in DevTools (Network / Sources) *(no key name / Gemini URL / system prompt in `.next/static`; re-check Network tab on live site)*
   - [ ] Works in Instagram in-app browser (typing path) + Chrome mobile (voice path) — needs a phone + live URL
   - [x] Lighthouse mobile Accessibility ≥ 90 *(local: 100 on `/`, `/quiz`, `/interview`)*

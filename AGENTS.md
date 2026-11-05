@@ -78,8 +78,8 @@ data/
 
 ## 5. AI + FALLBACK CHAIN (must always return usable feedback)
 Order inside `/api/feedback`:
-1. `GEMINI_MODEL_PRIMARY` (default `gemini-3.8-flash`)
-2. on error / 429 / timeout / invalid JSON → `GEMINI_MODEL_FALLBACK` (default `gemini-3.1-flash-lite` — stable and fast; `gemini-3.5-flash-lite` took ~27 s under load on 2026-11-06)
+1. `GEMINI_MODEL_PRIMARY` (default `gemini-3.1-flash-lite` — fast and reliable: 1.8–2.6 s in every test on 2026-11-06)
+2. on error / 429 / timeout / invalid JSON → `GEMINI_MODEL_FALLBACK` (default `gemini-3.8-flash` — larger, but returned 503 "high demand" or took 6.4 s on 2026-11-06, so it is the backup, not the primary)
 3. on error again → `buildOfflineFeedback()` from `lib/fallback.ts`
 - Timeout per model call: **max 10 s** (AbortController or SDK timeout option). Whole chain must finish in ~13 s (client gives up at 15 s), so the primary is capped at 7 s to leave the backup ≥ 6 s.
 - Validate AI JSON with the zod schema; invalid = failure → next step.
@@ -90,8 +90,8 @@ Order inside `/api/feedback`:
 ## 6. Env vars (`.env.example`)
 ```
 GEMINI_API_KEY=
-GEMINI_MODEL_PRIMARY=gemini-3.8-flash
-GEMINI_MODEL_FALLBACK=gemini-3.1-flash-lite
+GEMINI_MODEL_PRIMARY=gemini-3.1-flash-lite
+GEMINI_MODEL_FALLBACK=gemini-3.8-flash
 AI_ENABLED=true
 ALLOWED_ORIGIN=
 ```
