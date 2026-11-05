@@ -6,8 +6,8 @@ Items marked **(YOU)** are manual steps for the human — agents should remind, 
 ## Phase 0 — Setup (YOU)
 - [x] **(YOU)** Google AI Studio → create a project **with NO billing linked** → create API key
 - [ ] **(YOU)** Create GitHub repo (keep `.env.local` out of git)
-- [ ] **(YOU)** Fill in `lib/config.ts` later: SDG_LABEL, IG_HANDLE, EXPERT_CREDIT (APP_NAME = "Worklingo" — set)
-- [ ] **(YOU)** Check the Instagram handle for Worklingo is available
+- [x] **(YOU)** Fill in `lib/config.ts` later: SDG_LABEL, IG_HANDLE, EXPERT_CREDIT (APP_NAME = "Worklingo" — set) *(confirmed by user 2026-11-06)*
+- [x] **(YOU)** Check the Instagram handle for Worklingo is available *(@worklingo.my claimed)*
 
 ## Phase 1 — Scaffold
 - [x] `npx create-next-app@latest` (TypeScript, App Router, Tailwind, ESLint, no `src/` dir)
