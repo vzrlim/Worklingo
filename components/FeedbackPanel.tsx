@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { OfflineNotice } from "@/components/OfflineNotice";
+import { Laurel } from "@/components/greek";
 import { FeedbackResponse } from "@/lib/feedback-schema";
 import {
   CheckCircle2,
@@ -36,6 +37,14 @@ export function FeedbackPanel({
   onNextQuestion,
 }: FeedbackPanelProps) {
   const [copied, setCopied] = useState(false);
+  const scoreNumber = (
+    <div className="flex items-baseline gap-1 mt-0.5">
+      <span className="font-serif text-4xl font-bold text-primary">
+        {feedback.overallScore}
+      </span>
+      <span className="text-lg text-muted-foreground font-sans">/ 10</span>
+    </div>
+  );
 
   const handleCopy = async () => {
     try {
@@ -82,12 +91,11 @@ export function FeedbackPanel({
               <span className="text-xs text-muted-foreground font-sans uppercase tracking-wider">
                 Overall Assessment
               </span>
-              <div className="flex items-baseline gap-1 mt-0.5">
-                <span className="font-serif text-4xl font-bold text-primary">
-                  {feedback.overallScore}
-                </span>
-                <span className="text-lg text-muted-foreground font-sans">/ 10</span>
-              </div>
+              {feedback.overallScore >= 8 ? (
+                <Laurel className="h-24 w-28 -ml-3">{scoreNumber}</Laurel>
+              ) : (
+                scoreNumber
+              )}
             </div>
             <div>{getSourceBadge()}</div>
           </div>

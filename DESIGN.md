@@ -123,6 +123,14 @@ Icons: `lucide-react` only (shadcn's default), 20–24 px, always paired with te
 - Encouraging feedback language: "Nice — your Action is clear." / "Add a Result: what changed because of you?"
 - First mention of STAR/SEAT shows a one-line meaning.
 
+## 9b. Greek / Aegean motifs (`components/greek.tsx`) — user-approved 2026-11-06
+- **One bold moment:** the landing hero is a temple front (pediment that draws in once on load → inscribed entablature with the app name → Greek-key frieze → two Ionic columns framing the CTAs → stepped base). Don't add more page-load animation elsewhere.
+- **Greek key (`MeanderBand`)** = structure only: footer top border, short ornament under page/section titles. Colour `text-bronze/60–80`.
+- **Laurel** only around scores ≥ 8 (quiz result, feedback score) — it means "excellent", don't use it as decoration.
+- **Roman numerals** only for real sequences (quiz scenarios I–X).
+- **Marble** = faint SVG-turbulence veins on `body` (globals.css). Keep it faint; cards stay plain white.
+- All motifs are inline SVG / CSS masks using tokens (`text-primary`, `text-bronze`) — no image files. Every sub-page starts with a `BackButton` (44 px).
+
 ## 10. Don't
 - No modals or dialogs in the main flow, no carousels, no auto-playing media, no pop-ups.
 - No UI kits other than shadcn/ui (no MUI, Chakra, HeroUI, Magic UI, Aceternity, etc.).

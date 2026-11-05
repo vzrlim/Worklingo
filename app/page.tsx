@@ -19,60 +19,73 @@ import {
   BookOpen,
   Mic,
   MessageSquare,
-  Sparkles,
   ShieldCheck,
   Award,
   Users,
 } from "lucide-react";
+import {
+  IonicColumn,
+  MeanderBand,
+  Pediment,
+  TempleSteps,
+} from "@/components/greek";
 
 export default function Home() {
   return (
-    <div className="space-y-16 py-4 md:py-8 animate-in fade-in duration-300">
-      {/* 1. Hero Section */}
-      <section className="text-center space-y-5 max-w-2xl mx-auto">
-        <div>
+    <div className="space-y-16 py-2 md:py-8">
+      {/* 1. Hero: a temple front — pediment, inscribed entablature, Greek-key frieze, columns, steps */}
+      <section className="max-w-2xl mx-auto">
+        <Pediment className="h-16 sm:h-24 text-primary" />
+        <div className="border-y-2 border-primary/80 bg-card/70 py-3 text-center">
+          <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-[0.14em] pl-[0.14em] leading-none text-primary">
+            {APP_NAME}
+          </h1>
+        </div>
+        <MeanderBand className="mt-1 text-bronze/80" />
+
+        <div className="flex gap-3 sm:gap-8 px-1 sm:px-6">
+          <IonicColumn className="w-8 sm:w-12 shrink-0" />
+          <div className="flex-1 py-7 sm:py-10 text-center space-y-4">
+            <p className="font-serif text-lg sm:text-2xl font-semibold leading-snug text-foreground">
+              Learn the lingo of the workplace
+            </p>
+            <p className="font-sans text-base text-muted-foreground leading-relaxed">
+              Practise interviews out loud. Get coached in seconds. Made for
+              students preparing for internships and first jobs.
+            </p>
+            <div className="flex flex-col sm:flex-row sm:justify-center gap-3 pt-2">
+              <Button
+                render={<Link href="/interview" />}
+                nativeButton={false}
+                size="lg"
+                className="w-full sm:w-auto gap-2 shadow-sm"
+              >
+                <Mic className="size-4" />
+                Start Interview Practice
+              </Button>
+              <Button
+                render={<Link href="/quiz" />}
+                nativeButton={false}
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto gap-2 bg-card"
+              >
+                <BookOpen className="size-4" />
+                Play Workplace Quiz
+              </Button>
+            </div>
+          </div>
+          <IonicColumn className="w-8 sm:w-12 shrink-0" />
+        </div>
+        <TempleSteps />
+
+        <div className="pt-4 text-center">
           <Badge
             variant="outline"
-            className="text-xs font-sans text-muted-foreground border-border px-3 py-1 gap-1.5"
+            className="text-xs font-sans text-muted-foreground border-border bg-card px-3 py-1"
           >
-            <Sparkles className="size-3.5 text-primary" />
             {SDG_LABEL}
           </Badge>
-        </div>
-
-        <h1 className="font-serif text-3xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
-          {APP_NAME}
-        </h1>
-        <p className="font-serif text-lg md:text-2xl font-semibold text-primary -mt-2">
-          Learn the lingo of the workplace
-        </p>
-
-        <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed">
-          Practise interviews out loud. Get coached in seconds.
-          <br className="hidden sm:inline" /> Designed for university students
-          preparing for internships and graduate roles.
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <Button
-            render={<Link href="/interview" />}
-            size="lg"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-          >
-            <Mic className="size-4" />
-            Start Interview Practice
-            <ArrowRight className="size-4" />
-          </Button>
-
-          <Button
-            render={<Link href="/quiz" />}
-            variant="outline"
-            size="lg"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <BookOpen className="size-4" />
-            Play Workplace Quiz
-          </Button>
         </div>
       </section>
 
@@ -97,6 +110,7 @@ export default function Home() {
           <CardContent className="pt-2">
             <Button
               render={<Link href="/interview" />}
+              nativeButton={false}
               size="lg"
               variant="secondary"
               className="w-full flex items-center justify-between text-xs font-semibold cursor-pointer"
@@ -126,6 +140,7 @@ export default function Home() {
           <CardContent className="pt-2">
             <Button
               render={<Link href="/quiz" />}
+              nativeButton={false}
               size="lg"
               variant="secondary"
               className="w-full flex items-center justify-between text-xs font-semibold cursor-pointer"
@@ -139,13 +154,11 @@ export default function Home() {
 
       {/* 3. Why We Built This (3 Expert Insights from PRD §2) */}
       <section className="space-y-6 max-w-4xl mx-auto pt-4">
-        <div className="text-center space-y-1.5">
-          <span className="text-xs font-sans font-semibold uppercase tracking-wider text-primary">
-            Research-Driven Design
-          </span>
+        <div className="text-center space-y-3">
           <h2 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-foreground">
             Why We Built {APP_NAME}
           </h2>
+          <MeanderBand className="mx-auto w-28 text-bronze/70" />
           <p className="font-sans text-xs md:text-sm text-muted-foreground italic max-w-xl mx-auto">
             {EXPERT_CREDIT}
           </p>

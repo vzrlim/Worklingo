@@ -33,7 +33,9 @@ import {
   incrementDailyAiUsage,
 } from "@/lib/progress";
 import { toast } from "sonner";
-import { ArrowLeft, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
+import { MeanderBand } from "@/components/greek";
 
 export default function InterviewPage() {
   const [selectedQuestion, setSelectedQuestion] =
@@ -154,10 +156,12 @@ export default function InterviewPage() {
       {/* Screen 1: Question Selection */}
       {!selectedQuestion && (
         <div className="space-y-4">
-          <section className="text-center space-y-2 pt-2">
+          <BackButton href="/">Home</BackButton>
+          <section className="text-center space-y-3">
             <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-foreground">
               Interview Simulator
             </h1>
+            <MeanderBand className="mx-auto w-28 text-bronze/70" />
             <p className="text-sm text-muted-foreground font-sans leading-relaxed">
               Pick a question. Then say your answer out loud or type it.
             </p>
@@ -197,15 +201,9 @@ export default function InterviewPage() {
       {/* Screen 2: Practice & Answering */}
       {selectedQuestion && !feedback && (
         <div className="space-y-5">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSelectedQuestion(null)}
-            className="gap-1.5 -ml-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer font-sans"
-          >
-            <ArrowLeft className="size-4" />
-            Choose a different question
-          </Button>
+          <BackButton onClick={() => setSelectedQuestion(null)}>
+            All questions
+          </BackButton>
 
           <Card className="border-border shadow-xs bg-secondary/30">
             <CardHeader className="p-4 space-y-1">
@@ -292,15 +290,9 @@ export default function InterviewPage() {
       {selectedQuestion && feedback && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setFeedback(null)}
-              className="gap-1.5 -ml-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer font-sans"
-            >
-              <ArrowLeft className="size-4" />
-              Back to edit answer
-            </Button>
+            <BackButton onClick={() => setFeedback(null)}>
+              Edit answer
+            </BackButton>
             <span className="text-xs text-muted-foreground font-sans">
               Framework: <strong>{selectedQuestion.framework}</strong>
             </span>

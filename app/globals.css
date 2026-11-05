@@ -42,6 +42,7 @@
   --color-danger-soft: var(--danger-soft);
   --color-warn: var(--warn);
   --color-warn-soft: var(--warn-soft);
+  --color-bronze: var(--ring); /* alias: Corinthian bronze for Greek motifs */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -100,14 +101,52 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
   }
+  /* Athenian marble: faint veins (SVG turbulence, tileable, ~1 KB) */
+  body {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.0022 0.0085' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.33 0 0 0 0 0.41 -7 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)' opacity='0.09'/%3E%3C/svg%3E");
+    background-size: 640px 640px;
+  }
 }
 
-/* DESIGN.md §8: respect reduced motion (mic pulse, spinners, fades, hover scale) */
+/* ---------- Greek motifs (components/greek.tsx) ---------- */
+
+/* Greek key band: SVG tile used as a mask so the colour comes from text-* tokens */
+@utility meander {
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14' width='10' height='14'%3E%3Cpath d='M0 1H10M0 13H10M8 13V4H2V10H5V7' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14' width='10' height='14'%3E%3Cpath d='M0 1H10M0 13H10M8 13V4H2V10H5V7' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
+}
+
+/* Column fluting: thin vertical grooves on the shaft */
+@utility fluting {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 4px,
+    color-mix(in srgb, var(--primary) 30%, transparent) 4px 5px
+  );
+}
+
+/* The one orchestrated moment: the pediment draws itself on page load */
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-in [pathLength] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-line 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.draw-in [pathLength]:nth-child(2) { animation-delay: 0.25s; }
+.draw-in [pathLength]:nth-child(n + 3) { animation-delay: 0.6s; }
+
+/* DESIGN.md §8: respect reduced motion (mic pulse, spinners, fades, hover scale, pediment) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;

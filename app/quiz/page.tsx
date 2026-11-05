@@ -13,6 +13,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { addXp, unlockBadge } from "@/lib/progress";
 import { ArrowRight } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
+import { toRoman } from "@/components/greek";
 
 interface PreparedOption {
   text: string;
@@ -89,11 +91,14 @@ function QuizContent() {
 
   if (isFinished) {
     return (
-      <ResultScreen
-        score={score}
-        total={questions.length}
-        onPlayAgain={handlePlayAgain}
-      />
+      <div className="max-w-md mx-auto space-y-4">
+        <BackButton href="/">Home</BackButton>
+        <ResultScreen
+          score={score}
+          total={questions.length}
+          onPlayAgain={handlePlayAgain}
+        />
+      </div>
     );
   }
 
@@ -129,18 +134,25 @@ function QuizContent() {
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-6">
+    <div className="max-w-md mx-auto space-y-5">
+      <BackButton href="/">Home</BackButton>
       <QuizProgress current={currentIndex + 1} total={questions.length} />
 
       <Card className="border-border shadow-sm">
         <CardHeader className="space-y-3 pb-4">
-          <div>
+          <div className="flex items-center justify-between gap-3">
             <Badge
               variant="outline"
               className="text-xs font-sans text-muted-foreground border-border"
             >
               {currentQuestion.topic}
             </Badge>
+            <span
+              aria-hidden="true"
+              className="font-serif text-2xl font-bold leading-none text-bronze"
+            >
+              {toRoman(currentIndex + 1)}
+            </span>
           </div>
           <h2 className="font-serif text-lg md:text-xl font-semibold leading-snug text-foreground">
             {currentQuestion.scenario}

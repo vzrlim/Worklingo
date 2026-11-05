@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { APP_NAME, IG_HANDLE } from "@/lib/config";
+import { Laurel } from "@/components/greek";
 import { Award, RotateCcw, ArrowRight, Sparkles } from "lucide-react";
 
 interface ResultScreenProps {
@@ -20,6 +21,14 @@ interface ResultScreenProps {
 export function ResultScreen({ score, total, onPlayAgain }: ResultScreenProps) {
   const xpEarned = score * 10 + 20;
   const isBadgeEarned = score >= 8;
+  const scoreNumber = (
+    <div className="font-serif text-5xl font-bold tracking-tight text-primary">
+      {score}{" "}
+      <span className="text-2xl text-muted-foreground font-normal">
+        / {total}
+      </span>
+    </div>
+  );
 
   let feedbackMessage =
     "Good attempt! Review the workplace insights and try again to improve your score.";
@@ -45,13 +54,12 @@ export function ResultScreen({ score, total, onPlayAgain }: ResultScreenProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="py-2">
-          <div className="font-serif text-5xl font-bold tracking-tight text-primary">
-            {score}{" "}
-            <span className="text-2xl text-muted-foreground font-normal">
-              / {total}
-            </span>
-          </div>
+        <div className="py-2 flex flex-col items-center">
+          {isBadgeEarned ? (
+            <Laurel className="h-32 w-40">{scoreNumber}</Laurel>
+          ) : (
+            scoreNumber
+          )}
           <p className="mt-1 text-xs text-muted-foreground font-sans">
             {Math.round((score / total) * 100)}% accuracy
           </p>
@@ -87,6 +95,7 @@ export function ResultScreen({ score, total, onPlayAgain }: ResultScreenProps) {
         <div className="space-y-2.5 pt-2">
           <Button
             render={<Link href="/interview" />}
+            nativeButton={false}
             size="lg"
             className="w-full flex items-center justify-center gap-2"
           >

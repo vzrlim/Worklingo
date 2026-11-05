@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Cinzel } from "next/font/google";
 import { Badge } from "@/components/ui/badge";
 import { XpChip } from "@/components/XpChip";
+import { MeanderBand } from "@/components/greek";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME, SDG_LABEL, IG_HANDLE } from "@/lib/config";
 import "./globals.css";
@@ -43,8 +44,9 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="border-t border-border bg-card/60 mt-auto py-6">
-          <div className="max-w-md mx-auto px-4 text-center space-y-3">
+        <footer className="bg-card/70 mt-auto pb-6">
+          <MeanderBand className="text-bronze/60" />
+          <div className="max-w-md mx-auto px-4 pt-6 text-center space-y-3">
             <div>
               <Badge
                 variant="outline"
