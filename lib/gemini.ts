@@ -56,15 +56,10 @@ const RESPONSE_JSON_SCHEMA = {
 
 // The client gives up after 15 s. Leave 3 s for cold start + phone network.
 const TOTAL_BUDGET_MS = LIMITS.CLIENT_TIMEOUT_MS - 3_000; // 12 s
-// An overloaded model can hang 30 s+ before a 503, so the first model is
-// capped early and the second always gets a fair window.
-const SECOND_MODEL_RESERVE_MS = 6_000;
-const MIN_USEFUL_CALL_MS = 3_000;
-
-// After the primary fails, skip it for a while (per warm server instance)
-// so users don't wait for an overloaded model on every request.
-const PRIMARY_COOLDOWN_MS = 5 * 60_000;
-let primaryCooldownUntil = 0;
+// Hedged requests: if the primary hasn't answered by now (or has already failed),
+// start the backup in parallel; the first valid answer wins, the other is cancelled.
+// Normal answers take ~2.5 s, so the backup is only used when it is actually needed.
+const HEDGE_AFTER_MS = 4_000;
 
 /**
  * Lowest thinking setting each model family accepts.
@@ -115,10 +110,14 @@ async function callModel(
   modelName: string,
   userContent: string,
   source: "ai" | "ai-backup",
-  timeoutMs: number
+  stop: AbortSignal
 ): Promise<FeedbackResponse> {
+  // Each call: max 10 s (AGENTS.md §5), or sooner if the whole chain is stopped.
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const timer = setTimeout(() => controller.abort(), LIMITS.AI_TIMEOUT_MS);
+  const onStop = () => controller.abort();
+  if (stop.aborted) controller.abort();
+  else stop.addEventListener("abort", onStop, { once: true });
   try {
     const response = await ai.models.generateContent({
       model: modelName,
@@ -141,6 +140,7 @@ async function callModel(
     });
   } finally {
     clearTimeout(timer);
+    stop.removeEventListener("abort", onStop);
   }
 }
 
@@ -185,40 +185,48 @@ export async function generateInterviewFeedback(
     return buildOfflineFeedback(questionId, answer);
   }
 
-  const startedAt = Date.now();
-  const primary = { model: primaryModel, source: "ai" as const };
-  const backup = { model: fallbackModel, source: "ai-backup" as const };
-  // Normal order: primary → backup. While the primary is cooling down: backup → primary.
-  const chain =
-    Date.now() < primaryCooldownUntil ? [backup, primary] : [primary, backup];
+  // One switch stops everything: on success, or when the 12 s budget runs out.
+  const stopAll = new AbortController();
+  const budgetTimer = setTimeout(() => stopAll.abort(), TOTAL_BUDGET_MS);
 
-  for (let i = 0; i < chain.length; i++) {
-    const step = chain[i];
-    const remaining = TOTAL_BUDGET_MS - (Date.now() - startedAt);
-    const isLast = i === chain.length - 1;
-    const timeoutMs = Math.min(
-      LIMITS.AI_TIMEOUT_MS,
-      isLast ? remaining : remaining - SECOND_MODEL_RESERVE_MS
-    );
-    if (timeoutMs < MIN_USEFUL_CALL_MS) continue;
-    try {
-      const result = await callModel(
-        aiClient,
-        step.model,
-        userContent,
-        step.source,
-        timeoutMs
+  // 1. Primary starts now.
+  const primary = callModel(aiClient, primaryModel, userContent, "ai", stopAll.signal);
+
+  // 2. Backup starts if the primary is slow (HEDGE_AFTER_MS) or fails early.
+  let startBackup = () => {};
+  const backup = new Promise<FeedbackResponse>((resolve, reject) => {
+    let started = false;
+    startBackup = () => {
+      if (started || stopAll.signal.aborted) return;
+      started = true;
+      callModel(aiClient, fallbackModel, userContent, "ai-backup", stopAll.signal).then(
+        resolve,
+        reject
       );
-      if (step === primary) primaryCooldownUntil = 0; // primary is healthy again
-      return result;
-    } catch {
-      // Never log the error object: it can echo request content.
-      if (step === primary) {
-        primaryCooldownUntil = Date.now() + PRIMARY_COOLDOWN_MS;
-      }
-    }
-  }
+    };
+  });
+  const hedgeTimer = setTimeout(() => startBackup(), HEDGE_AFTER_MS);
+  primary.catch(() => startBackup());
+  // If the budget runs out before the backup ever started, this still ends the race.
+  const backupOrStop = Promise.race([
+    backup,
+    new Promise<never>((_, reject) =>
+      stopAll.signal.addEventListener("abort", () => reject(new Error("budget")), {
+        once: true,
+      })
+    ),
+  ]);
 
-  // 3. Offline checklist feedback
-  return buildOfflineFeedback(questionId, answer);
+  try {
+    // First valid answer wins (zod-validated inside callModel).
+    return await Promise.any([primary, backupOrStop]);
+  } catch {
+    // Both failed or ran out of time. Never log the error: it can echo request content.
+    // 3. Offline checklist feedback
+    return buildOfflineFeedback(questionId, answer);
+  } finally {
+    clearTimeout(budgetTimer);
+    clearTimeout(hedgeTimer);
+    stopAll.abort(); // cancel whichever request is still running
+  }
 }
