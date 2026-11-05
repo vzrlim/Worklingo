@@ -101,10 +101,15 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
   }
-  /* Athenian marble: faint veins (SVG turbulence, tileable, ~1 KB) */
+  /* Gold-veined Athenian marble (two SVG turbulence layers: stone-grey + bronze veins)
+     under a warm light falling from above. ~1.5 KB, no image files. */
   body {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.0022 0.0085' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.33 0 0 0 0 0.41 -7 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)' opacity='0.09'/%3E%3C/svg%3E");
-    background-size: 640px 640px;
+    overflow-x: clip;
+    background-image:
+      radial-gradient(ellipse 90% 520px at 50% 0, rgb(255 250 236 / 0.85), transparent 72%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='720'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.0018 0.007' numOctaves='5' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.33 0 0 0 0 0.41 -6 0 0 0 1'/%3E%3C/filter%3E%3Cfilter id='o' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.0035 0.0022' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.57 0 0 0 0 0.38 0 0 0 0 0.09 -10 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.22'/%3E%3Crect width='100%25' height='100%25' filter='url(%23o)' opacity='0.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, repeat;
+    background-size: 100% 100%, 720px 720px;
   }
 }
 
@@ -191,6 +196,117 @@
   from { transform: scale(0.4); opacity: 0; }
 }
 .pop { animation: pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+
+/* ---------- Landing: ethereal sky, mist, gold dust, 3D temple ---------- */
+
+/* Divine light behind the temple, with slowly turning sun rays */
+.aegean-sky {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  left: 50%;
+  top: -4rem;
+  width: 170%;
+  height: 115%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 45% 40% at 50% 28%, rgb(255 251 238 / 0.95), rgb(255 244 214 / 0.5) 45%, transparent 72%);
+}
+.aegean-sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 28%, rgb(201 162 78 / 0.16) 0deg, transparent 4deg 11deg);
+  -webkit-mask: radial-gradient(circle 420px at 50% 28%, black 10%, transparent 100%);
+  mask: radial-gradient(circle 420px at 50% 28%, black 10%, transparent 100%);
+  transform-origin: 50% 28%;
+  animation: sun-rays 120s linear infinite;
+}
+@keyframes sun-rays { to { transform: rotate(360deg); } }
+
+/* Gold dust drifting upward (two layers of tiny motes via box-shadow) */
+.gold-motes {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  inset: 0 -10%;
+  overflow: hidden;
+}
+.gold-motes::before,
+.gold-motes::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  box-shadow:
+    40px -60px 0 rgb(201 162 78 / 0.75), 130px -220px 0 rgb(201 162 78 / 0.55),
+    210px -40px 0 rgb(201 162 78 / 0.65), 300px -330px 0 rgb(201 162 78 / 0.5),
+    370px -120px 0 rgb(201 162 78 / 0.7), 450px -260px 0 rgb(201 162 78 / 0.55),
+    520px -80px 0 rgb(201 162 78 / 0.65), 600px -380px 0 rgb(201 162 78 / 0.5),
+    680px -170px 0 rgb(201 162 78 / 0.7), 90px -420px 0 rgb(201 162 78 / 0.5);
+  animation: motes 22s linear infinite;
+}
+.gold-motes::after {
+  width: 2px;
+  height: 2px;
+  box-shadow:
+    70px -150px 0 rgb(255 236 190 / 0.9), 170px -360px 0 rgb(201 162 78 / 0.6),
+    260px -90px 0 rgb(255 236 190 / 0.9), 340px -480px 0 rgb(201 162 78 / 0.6),
+    410px -200px 0 rgb(255 236 190 / 0.9), 490px -30px 0 rgb(201 162 78 / 0.6),
+    570px -300px 0 rgb(255 236 190 / 0.9), 640px -110px 0 rgb(201 162 78 / 0.6),
+    720px -420px 0 rgb(255 236 190 / 0.9), 20px -280px 0 rgb(201 162 78 / 0.6);
+  animation-duration: 31s;
+  animation-delay: -12s;
+}
+@keyframes motes {
+  0% { transform: translateY(0); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateY(-520px); opacity: 0; }
+}
+
+/* Mist curling around the temple's base */
+.temple-mist {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  left: -20%;
+  right: -20%;
+  bottom: 1.5rem;
+  height: 5rem;
+  background: radial-gradient(ellipse 50% 50% at 50% 60%, rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.45) 45%, transparent 72%);
+  filter: blur(6px);
+  animation: mist-drift 14s ease-in-out infinite alternate;
+}
+@keyframes mist-drift {
+  from { transform: translateX(-4%); }
+  to { transform: translateX(4%); }
+}
+
+/* 3D temple: swings up on load; tilts toward the mouse with layers in depth */
+.temple-stage { perspective: 1100px; }
+.temple-enter {
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  animation: temple-enter 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes temple-enter {
+  from { transform: rotateX(24deg) translateY(28px); }
+}
+.temple-tilt {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.temple-tilt .depth-row { transform-style: preserve-3d; }
+.temple-tilt :is(.depth-1, .depth-2, .depth-3) {
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.temple-tilt[data-tilt] .depth-1 { transform: translateZ(18px); }
+.temple-tilt[data-tilt] .depth-2 { transform: translateZ(34px); }
+.temple-tilt[data-tilt] .depth-3 { transform: translateZ(48px); }
 
 /* XP chip bumps with a bronze glow when XP changes */
 @keyframes xp-bump {

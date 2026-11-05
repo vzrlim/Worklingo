@@ -29,23 +29,29 @@ import {
   Pediment,
   TempleSteps,
 } from "@/components/greek";
+import { TempleStage } from "@/components/TempleStage";
 
 export default function Home() {
   return (
     <div className="space-y-16 py-2 md:py-8">
       {/* 1. Hero: a temple front — pediment, inscribed entablature, Greek-key frieze, columns, steps */}
-      <section className="max-w-2xl mx-auto">
-        <Pediment className="text-primary" />
-        <div className="border-b-2 border-primary/80 bg-card/70 py-3 text-center">
+      <section className="relative isolate max-w-2xl mx-auto">
+        <div aria-hidden="true" className="aegean-sky" />
+        <div aria-hidden="true" className="gold-motes" />
+        <TempleStage>
+        <Pediment className="depth-3 text-primary" />
+        <div className="depth-2 border-b-2 border-primary/80 bg-card/70 py-3 text-center">
           <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-[0.14em] pl-[0.14em] leading-none text-primary">
             {APP_NAME}
           </h1>
         </div>
-        <MeanderBand className="unroll mt-1 text-bronze/80" />
+        <MeanderBand className="depth-2 unroll mt-1 text-bronze/80" />
 
-        <div className="flex gap-3 sm:gap-8 px-1 sm:px-6">
-          <IonicColumn className="rise-col w-8 sm:w-12 shrink-0" />
-          <div className="flex-1 py-7 sm:py-10 text-center space-y-4">
+        <div className="depth-row flex gap-3 sm:gap-8 px-1 sm:px-6">
+          <div className="depth-1 flex w-8 sm:w-12 shrink-0">
+            <IonicColumn className="rise-col w-full" />
+          </div>
+          <div className="depth-2 flex-1 py-7 sm:py-10 text-center space-y-4">
             <p className="font-serif text-lg sm:text-2xl font-semibold leading-snug text-foreground">
               Learn the lingo of the workplace
             </p>
@@ -75,9 +81,13 @@ export default function Home() {
               </Button>
             </div>
           </div>
-          <IonicColumn className="rise-col w-8 sm:w-12 shrink-0" />
+          <div className="depth-1 flex w-8 sm:w-12 shrink-0">
+            <IonicColumn className="rise-col w-full" />
+          </div>
         </div>
         <TempleSteps />
+        </TempleStage>
+        <div aria-hidden="true" className="temple-mist" />
 
         <div className="pt-4 text-center">
           <Badge
